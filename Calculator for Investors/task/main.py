@@ -12,32 +12,22 @@ class Calculator:
     def __repr__(self):
         return "Welcome to the Investor Program!"
 
-    def process_company_info(self, ticker, operation):
+    def process_company_info(self, operation):
+        params = []
         if operation == "CREATE":
-            ticker = input("Enter ticker (in the format 'MOON'):\n")
-            company = input("Enter company (in the format 'Moon Corp'):\n")
-            industries = input("Enter industries (in the format 'Technology'):\n")
-        ebitda = input("Enter ebitda (in the format '987654321'):\n")
-        sales = input("Enter sales (in the format '987654321'):\n")
-        net_profit = input("Enter net profit (in the format '987654321'):\n")
-        market_price = input("Enter market price (in the format '987654321'):\n")
-        net_debt = input("Enter net debt (in the format '987654321'):\n")
-        assets = input("Enter assets (in the format '987654321'):\n")
-        equity = input("Enter equity (in the format '987654321'):\n")
-        cash_equivalents = input("Enter cash equivalents (in the format '987654321'):\n")
-        liability = input("Enter liabilities (in the format '987654321'):\n")
+            for key, value in {"ticker": "MOON", "company": "Moon Corp", "industries": "Technology"}:
+                params.append(input(f"Enter {key} (in the format '{value}'):\n"))
+        for element in ('ebitda', 'sales', 'net_profit', 'market_price', 'net_debt', 'assets', 'equity', 'cash_equivalents', 'liability'):
+            params.append(input(f"Enter {element} (in the format '987654321'):\n"))
 
         if operation == "CREATE":
-            DbManagement().create_company_entry(ticker, company, industries)
-            DbManagement().create_financial_entry(ticker, ebitda, sales, net_profit, market_price, net_debt, assets, equity,
-                                              cash_equivalents, liability)
+            DbManagement().create_company_entry(params)
+            DbManagement().create_financial_entry(params)
             print("Company created successfully!")
 
         if operation == "UPDATE":
-            DbManagement().update_financial_entry(ticker, ebitda, sales, net_profit, market_price, net_debt, assets, equity,
-                                              cash_equivalents, liability)
+            DbManagement().update_financial_entry(params)
             print("Company updated successfully!")
-
 
     def get_company_params(self, param, param1, param2):
         try:
@@ -78,7 +68,7 @@ class Calculator:
     def process_crud_menu(self):
         inp = input("Enter an option:\n")
         if inp == "1":
-            self.process_company_info("", "CREATE")
+            self.process_company_info("CREATE")
         if inp == "2":
             company_to_show = input("Enter company name:\n")
             companies_to_show = DbManagement().show_companies(company_to_show, "LIKE", "companies")
@@ -87,13 +77,11 @@ class Calculator:
                 company_ticker_to_read = companies_to_show[int(input("Enter company number:"))]
                 print(company_ticker_to_read[0], company_ticker_to_read[1])
                 company_to_read = DbManagement().show_companies(company_ticker_to_read[0], "=", "financial")[0]
-                self.get_company_params("P/E", company_to_read[4], company_to_read[3])
-                self.get_company_params("P/S", company_to_read[4], company_to_read[2])
-                self.get_company_params("P/B", company_to_read[4], company_to_read[6])
-                self.get_company_params("ND/EBITDA", company_to_read[5], company_to_read[1])
-                self.get_company_params("ROE", company_to_read[3], company_to_read[7])
-                self.get_company_params("ROA", company_to_read[3], company_to_read[6])
-                self.get_company_params("L/A", company_to_read[9], company_to_read[6])
+                for key, value in {"P/E": [company_to_read[4], company_to_read[3]], "P/S": [company_to_read[4], company_to_read[2]],
+                    "P/B": [company_to_read[4], company_to_read[6]], "ND/EBITDA": [company_to_read[5], company_to_read[1]],
+                    "ROE": [company_to_read[3], company_to_read[7]], "ROA": [company_to_read[3], company_to_read[6]],
+                    "L/A": [company_to_read[9], company_to_read[6]]}:
+                    self.get_company_params(key, value[0], value[1])
 
             else:
                 print("Company not found!")
@@ -102,11 +90,8 @@ class Calculator:
             try:
                 companies_to_update = DbManagement().show_companies(company_to_update, "LIKE", "companies")
                 print(*[f'{index} {x[1]}' for index, x in enumerate(companies_to_update)], sep="\n")
-                company_ticker_to_update = companies_to_update[int(input("Enter company number:"))][0]
-                company_to_update = DbManagement().show_companies(company_ticker_to_update, "=", "financial")
-                self.process_company_info(company_to_update[0][0].lower(), "UPDATE")
-            except Exception as e:
-                print(e)
+                self.process_company_info("UPDATE")
+            except:
                 print("Company not found!")
         if inp == "4":
             company_to_delete = input("Enter company name:\n")
@@ -116,7 +101,7 @@ class Calculator:
                 company_ticker_to_delete = companies_to_delete[int(input("Enter company number:"))][0]
                 DbManagement().delete_company(company_ticker_to_delete.lower())
                 print("Company deleted successfully!")
-            except Exception as e:
+            except:
                 print("Company not found!")
         if inp == "5":
             DbManagement().show_all_companies()

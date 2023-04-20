@@ -5,6 +5,7 @@ import sqlite3
 conn = sqlite3.connect('investor.db')
 c = conn.cursor()
 
+
 class DbManagement:
 
     def repl(self, row):
@@ -32,18 +33,16 @@ class DbManagement:
                     self.create_financial_entry(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9])
 
     def create_company_entry(self, *args):
-        c.execute("INSERT INTO companies (ticker, name, sector) VALUES (?, ?, ?)", (args))
+        c.execute("INSERT INTO companies (ticker, name, sector) VALUES (?, ?, ?)", args)
         conn.commit()
 
     def create_financial_entry(self, *args):
         c.execute(
-            "INSERT INTO financial (ticker, ebitda, sales, net_profit, market_price, net_debt, assets, equity, cash_equivalents, liabilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (args))
+            "INSERT INTO financial (ticker, ebitda, sales, net_profit, market_price, net_debt, assets, equity, cash_equivalents, liabilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", args)
         conn.commit()
 
     def update_financial_entry(self, *args):
-        c.execute(f"UPDATE financial SET ebitda = ?, sales = ?, net_profit = ?, market_price = ?, net_debt = ?, assets = ?, equity = ?, cash_equivalents = ?, liabilities = ? WHERE LOWER(ticker) = ?",
-                  (args))
+        c.execute(f"UPDATE financial SET ebitda = ?, sales = ?, net_profit = ?, market_price = ?, net_debt = ?, assets = ?, equity = ?, cash_equivalents = ?, liabilities = ? WHERE LOWER(ticker) = ?", args)
         conn.commit()
 
     def delete_company(self, company):
