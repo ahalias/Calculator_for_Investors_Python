@@ -67,8 +67,6 @@ class DbManagement:
             print(*entry, end="\n")
 
     def show_companies(self, companies_to_show, operator, table):
-        name = ""
-        what_to_find = ""
         if operator == "LIKE":
             name = f'%{companies_to_show.lower()}%'
             what_to_find = "name"
