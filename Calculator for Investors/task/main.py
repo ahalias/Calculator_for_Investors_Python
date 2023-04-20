@@ -120,4 +120,3 @@ class Calculator:
                 print("Company not found!")
         if inp == "5":
             DbManagement().show_all_companies()
-

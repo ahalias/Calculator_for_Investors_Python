@@ -607,8 +607,46 @@ files:
   visible: true
   learner_created: true
 feedback_link: https://hyperskill.org/projects/264/stages/1337/implement#comment
-status: Solved
+status: Failed
 feedback:
-  message: Congratulations!
-  time: "Thu, 20 Apr 2023 13:50:07 UTC"
+  message: |-
+    Wrong answer in test #6
+
+    Your program should output:
+    Not implemented!
+    MAIN MENU
+    0 Exit
+    1 CRUD operations
+    2 Show top ten companies by criteria
+    Enter an option:
+    instead of:
+    MAIN MENU
+    0 Exit
+    1 CRUD operations
+    2 Show top ten companies by criteria
+    Enter an option:
+
+    Please find below the output of your program during this failed test.
+    Note that the '>' character indicates the beginning of the input line.
+
+    ---
+
+    Welcome to the Investor Program!
+    MAIN MENU
+    0 Exit
+    1 CRUD operations
+    2 Show top ten companies by criteria
+    Enter an option:> 2
+    TOP TEN MENU
+    0 Back
+    1 List by ND/EBITDA
+    2 List by ROE
+    3 List by ROA
+    Enter an option:> 2
+    MAIN MENU
+    0 Exit
+    1 CRUD operations
+    2 Show top ten companies by criteria
+    Enter an option:
+  time: "Thu, 20 Apr 2023 16:15:34 UTC"
 record: 3

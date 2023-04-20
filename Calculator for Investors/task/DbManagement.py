@@ -31,22 +31,19 @@ class DbManagement:
                 elif operation == "create_financial":
                     self.create_financial_entry(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9])
 
-    def create_company_entry(self, ticker, name, sector):
-        c.execute("INSERT INTO companies (ticker, name, sector) VALUES (?, ?, ?)", (ticker, name, sector))
+    def create_company_entry(self, *args):
+        c.execute("INSERT INTO companies (ticker, name, sector) VALUES (?, ?, ?)", (args))
         conn.commit()
 
-    def create_financial_entry(self, ticker, ebitda, sales, net_profit, market_price, net_debt, assets, equity, cash_equivalents,
-                         liabilities):
+    def create_financial_entry(self, *args):
         c.execute(
             "INSERT INTO financial (ticker, ebitda, sales, net_profit, market_price, net_debt, assets, equity, cash_equivalents, liabilities) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            (ticker, ebitda, sales, net_profit, market_price, net_debt, assets, equity, cash_equivalents, liabilities))
+            (args))
         conn.commit()
 
-    def update_financial_entry(self, ticker, ebitda, sales, net_profit, market_price, net_debt, assets, equity, cash_equivalents,
-                         liabilities):
+    def update_financial_entry(self, *args):
         c.execute(f"UPDATE financial SET ebitda = ?, sales = ?, net_profit = ?, market_price = ?, net_debt = ?, assets = ?, equity = ?, cash_equivalents = ?, liabilities = ? WHERE LOWER(ticker) = ?",
-                  (ebitda, sales, net_profit, market_price, net_debt, assets, equity, cash_equivalents,
-                         liabilities, ticker))
+                  (args))
         conn.commit()
 
     def delete_company(self, company):
